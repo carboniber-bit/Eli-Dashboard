@@ -23,7 +23,26 @@ export function formatDate(d: string | null | undefined) {
   return `${day}/${m}/${y}`;
 }
 
-export const todayISO = () => new Date().toISOString().slice(0, 10);
+// Data de hoje no horário de Brasília (evita virar o dia às 21h por causa do UTC)
+export const todayISO = () => new Date().toLocaleDateString("sv-SE", { timeZone: "America/Sao_Paulo" });
+
+/** Soma/subtrai meses de "YYYY-MM". */
+export function addMonths(ym: string, delta: number) {
+  const [y, m] = ym.split("-").map(Number);
+  return new Date(Date.UTC(y, m - 1 + delta, 1)).toISOString().slice(0, 7);
+}
+
+export function monthLabel(ym: string, short = false) {
+  const [y, m] = ym.split("-").map(Number);
+  return new Date(Date.UTC(y, m - 1, 1)).toLocaleDateString("pt-BR", {
+    month: short ? "short" : "long",
+    ...(short ? {} : { year: "numeric" as const }),
+    timeZone: "UTC",
+  });
+}
+
+const brlCurto = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
+export const formatBRLCurto = (v: number) => brlCurto.format(v);
 
 export function daysUntil(d: string) {
   const a = new Date(todayISO() + "T00:00:00");

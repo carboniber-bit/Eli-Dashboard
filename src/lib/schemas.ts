@@ -57,3 +57,12 @@ export const pecaSchema = z.object({
   preco_venda: dinheiroPositivo("Digite o preço de venda"),
   custo: opt,
 });
+
+export const gastoSchema = z.object({
+  descricao: z.string().trim().min(2, "Diga o que foi comprado"),
+  valor: dinheiroPositivo("Digite o valor gasto (ex.: 250,00)"),
+  data: z.string().min(1, "Escolha a data da compra"),
+  categoria: z.string().min(1, "Escolha a categoria"),
+  observacao: opt,
+});
+export type GastoInput = z.infer<typeof gastoSchema>;

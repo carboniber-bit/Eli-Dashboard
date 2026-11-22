@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronsLeft, ChevronsRight, LayoutGrid, LogOut, Menu, Shirt, Tag, Users, X } from "lucide-react";
+import { ChevronsLeft, ChevronsRight, LayoutGrid, LogOut, Menu, Shirt, Tag, TrendingUp, Users, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -12,6 +12,7 @@ const links = [
   { href: "/encomendas", label: "Encomendas", icon: Shirt },
   { href: "/clientes", label: "Clientes", icon: Users },
   { href: "/pronta-entrega", label: "Pronta-entrega", icon: Tag },
+  { href: "/financeiro", label: "Financeiro", icon: TrendingUp },
 ];
 
 function Nav({ collapsed, onNavigate }: { collapsed: boolean; onNavigate?: () => void }) {

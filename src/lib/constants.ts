@@ -36,3 +36,5 @@ export const CATEGORIAS = [
   "Vestido", "Blusa", "Saia", "Calça", "Conjunto", "Short", "Macacão", "Casaco", "Outro",
 ];
 export const TAMANHOS = ["PP", "P", "M", "G", "GG", "Único"];
+
+export const CATEGORIAS_GASTO = ["Mercadoria", "Tecido e aviamentos", "Frete e embalagem", "Outros"];

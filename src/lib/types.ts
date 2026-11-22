@@ -60,3 +60,12 @@ export type Peca = {
   custo: number | null;
   status: StatusPeca;
 };
+
+export type Gasto = {
+  id: string;
+  descricao: string;
+  valor: number;
+  data: string;
+  categoria: string;
+  observacao: string | null;
+};

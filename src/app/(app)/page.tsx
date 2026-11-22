@@ -11,9 +11,11 @@ export default async function DashboardPage() {
   const supabase = await createClient();
   const inicioMes = todayISO().slice(0, 8) + "01";
 
-  const [{ data }, { data: pagMes }, { data: clientes }] = await Promise.all([
+  const [{ data }, { data: pagMes }, { data: vendasMes }, { data: gastosMes }, { data: clientes }] = await Promise.all([
     supabase.from("encomendas_resumo").select("*").order("numero", { ascending: false }),
     supabase.from("pagamentos").select("valor").gte("data", inicioMes),
+    supabase.from("vendas").select("valor").gte("data", inicioMes),
+    supabase.from("gastos").select("valor").gte("data", inicioMes),
     supabase.from("clientes").select("id,nome").order("nome"),
   ]);
 
@@ -23,7 +25,11 @@ export default async function DashboardPage() {
   const aguardandoPgto = abertas.filter((e) => e.status_pagamento === "nao_pago");
   const prontas = todas.filter((e) => e.status === "pronto");
   const faltaReceber = todas.filter((e) => e.status !== "cancelado").reduce((s, e) => s + Number(e.saldo), 0);
-  const recebidoMes = (pagMes ?? []).reduce((s, p) => s + Number(p.valor), 0);
+  const recebidoMes =
+    (pagMes ?? []).reduce((s, p) => s + Number(p.valor), 0) +
+    (vendasMes ?? []).reduce((s, v) => s + Number(v.valor), 0);
+  const gastosTotalMes = (gastosMes ?? []).reduce((s, g) => s + Number(g.valor), 0);
+  const lucroMes = recebidoMes - gastosTotalMes;
 
   const atrasadas = abertas.filter((e) => daysUntil(e.prazo_entrega) < 0);
   const proximas = abertas.filter((e) => daysUntil(e.prazo_entrega) >= 0 && daysUntil(e.prazo_entrega) <= 3);
@@ -75,6 +81,17 @@ export default async function DashboardPage() {
           </Link>
         ))}
       </section>
+
+      <Link href="/financeiro" className="card mb-5 flex flex-wrap items-center justify-between gap-x-6 gap-y-2 p-5 transition hover:bg-white">
+        <div>
+          <p className="text-sm text-taupe">Lucro do mês</p>
+          <p className={`mt-1 text-2xl font-semibold ${lucroMes < 0 ? "text-[#a34f4f]" : ""}`}>{formatBRL(lucroMes)}</p>
+        </div>
+        <p className="text-sm text-cacau">
+          Recebido {formatBRL(recebidoMes)} − Gastos {formatBRL(gastosTotalMes)}
+        </p>
+        <span className="text-sm font-medium text-cacau underline">Ver gráfico e registrar gastos</span>
+      </Link>
 
       <div className="grid gap-5 lg:grid-cols-[1.6fr_1fr]">
         <section className="card overflow-hidden">
