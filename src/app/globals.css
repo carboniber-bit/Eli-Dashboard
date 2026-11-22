@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    @apply bg-creme text-tinta font-sans antialiased;
+    background-image:
+      radial-gradient(60rem 30rem at 0% 0%, rgba(232, 220, 208, 0.55), transparent 60%),
+      radial-gradient(50rem 28rem at 100% 0%, rgba(244, 227, 225, 0.6), transparent 60%);
+    background-attachment: fixed;
+  }
+  :focus-visible { @apply outline-none ring-2 ring-cacau/40 ring-offset-2 ring-offset-creme; }
+}
+
+@layer components {
+  .card { @apply rounded-xl2 bg-white/80 shadow-suave border border-nude/60; }
+  .panel { @apply rounded-xl2 bg-areia/60 p-4 sm:p-5; }
+  .label { @apply text-sm font-medium text-cacau; }
+  .input {
+    @apply w-full rounded-xl border border-nude bg-white px-3.5 py-2.5 text-[15px]
+           placeholder:text-taupe/80 transition focus:border-cacau/50;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-[15px]
+           font-medium transition disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px];
+  }
+  .btn-primary { @apply btn bg-cacau text-creme hover:bg-tinta; }
+  .btn-soft { @apply btn bg-white border border-nude text-tinta hover:bg-areia; }
+  .btn-ghost { @apply btn text-cacau hover:bg-areia; }
+  .btn-danger { @apply btn bg-roseclaro text-[#8c4a4a] hover:bg-[#efd2cf]; }
+}
