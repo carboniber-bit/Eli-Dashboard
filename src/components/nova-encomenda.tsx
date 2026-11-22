@@ -78,7 +78,10 @@ function NovaEncomendaDrawer({
     if (foto) fd.append("foto", foto);
     const res = await criarEncomenda(fd);
     setSaving(false);
-    if (!res.ok) return toast.error(res.error);
+    if (!res.ok) {
+        toast.error(res.error);
+        return;
+      }
     toast.success("Encomenda salva! Já está na lista e no resumo.");
     onClose();
     router.refresh();

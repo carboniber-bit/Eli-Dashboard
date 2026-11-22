@@ -36,7 +36,10 @@ export function ProntaEntregaView({ pecas, abrirNova }: { pecas: Peca[]; abrirNo
   function reservar(p: Peca) {
     start(async () => {
       const r = await alterarReserva(p.id, p.status !== "reservada");
-      if (!r.ok) return toast.error(r.error);
+      if (!r.ok) {
+        toast.error(r.error);
+        return;
+      }
       toast.success(p.status === "reservada" ? "Reserva desfeita." : "Peça reservada!");
       router.refresh();
     });
@@ -46,7 +49,10 @@ export function ProntaEntregaView({ pecas, abrirNova }: { pecas: Peca[]; abrirNo
     if (!confirm(`Excluir “${p.nome}”? Essa ação não pode ser desfeita.`)) return;
     start(async () => {
       const r = await excluirPeca(p.id);
-      if (!r.ok) return toast.error(r.error);
+      if (!r.ok) {
+        toast.error(r.error);
+        return;
+      }
       toast.success("Peça excluída.");
       router.refresh();
     });
@@ -145,7 +151,10 @@ function PecaDrawer({ peca, onClose }: { peca: Peca | null; onClose: () => void 
           setSaving(true);
           const r = await salvarPeca(peca?.id ?? null, fd);
           setSaving(false);
-          if (!r.ok) return toast.error(r.error);
+          if (!r.ok) {
+        toast.error(r.error);
+        return;
+      }
           toast.success(peca ? "Peça atualizada!" : "Peça adicionada!");
           onClose();
           router.refresh();
@@ -209,7 +218,10 @@ function VendaDrawer({ peca, onClose }: { peca: Peca; onClose: () => void }) {
               setSaving(true);
               const r = await venderPeca(peca.id, qtd, forma);
               setSaving(false);
-              if (!r.ok) return toast.error(r.error);
+              if (!r.ok) {
+        toast.error(r.error);
+        return;
+      }
               toast.success("Venda registrada e estoque atualizado!");
               onClose();
               router.refresh();

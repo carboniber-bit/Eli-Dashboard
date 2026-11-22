@@ -26,7 +26,10 @@ export function EncomendaAcoes({ e }: { e: EncomendaResumo }) {
   function mudar(status: StatusEncomenda, msg: string) {
     start(async () => {
       const r = await alterarStatus(e.id, status);
-      if (!r.ok) return toast.error(r.error);
+      if (!r.ok) {
+        toast.error(r.error);
+        return;
+      }
       toast.success(msg);
       router.refresh();
     });
@@ -112,7 +115,10 @@ function PagamentoDrawer({ e, onClose }: { e: EncomendaResumo; onClose: () => vo
           setSaving(true);
           const r = await registrarPagamento(e.id, v);
           setSaving(false);
-          if (!r.ok) return toast.error(r.error);
+          if (!r.ok) {
+        toast.error(r.error);
+        return;
+      }
           toast.success("Pagamento registrado!");
           onClose();
           router.refresh();
@@ -161,7 +167,10 @@ function EditarDrawer({ e, onClose }: { e: EncomendaResumo; onClose: () => void 
           setSaving(true);
           const r = await atualizarEncomenda(e.id, fd);
           setSaving(false);
-          if (!r.ok) return toast.error(r.error);
+          if (!r.ok) {
+        toast.error(r.error);
+        return;
+      }
           toast.success("Pedido atualizado!");
           onClose();
           router.refresh();
@@ -209,7 +218,10 @@ export function RemoverPagamentoButton({ encomendaId, pagamentoId }: { encomenda
         if (!confirm("Remover este pagamento? O valor voltará para \"falta receber\".")) return;
         start(async () => {
           const r = await removerPagamento(encomendaId, pagamentoId);
-          if (!r.ok) return toast.error(r.error);
+          if (!r.ok) {
+        toast.error(r.error);
+        return;
+      }
           toast.success("Pagamento removido.");
           router.refresh();
         });

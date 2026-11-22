@@ -36,7 +36,10 @@ export function ClienteDrawer({
     setSaving(true);
     const res = await salvarCliente(cliente?.id ?? null, values);
     setSaving(false);
-    if (!res.ok) return toast.error(res.error);
+    if (!res.ok) {
+        toast.error(res.error);
+        return;
+      }
     toast.success(cliente ? "Cliente atualizada!" : "Cliente cadastrada!");
     reset();
     onClose();

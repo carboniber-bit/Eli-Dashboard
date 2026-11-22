@@ -27,7 +27,10 @@ export function ClienteAcoes({ cliente }: { cliente: Cliente }) {
           if (!confirm(`Excluir ${cliente.nome}? Essa ação não pode ser desfeita.`)) return;
           start(async () => {
             const r = await excluirCliente(cliente.id);
-            if (!r.ok) return toast.error(r.error);
+            if (!r.ok) {
+        toast.error(r.error);
+        return;
+      }
             toast.success("Cliente excluída.");
             router.push("/clientes");
           });
