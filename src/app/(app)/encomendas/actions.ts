@@ -36,7 +36,10 @@ export async function criarEncomenda(formData: FormData): Promise<Result> {
       .insert({ nome: v.novo_cliente_nome!.trim(), telefone: clean(v.novo_cliente_telefone) })
       .select("id")
       .single();
-    if (error) return { ok: false, error: "Não consegui cadastrar a cliente nova. Tente de novo." };
+    if (error) {
+      console.error("[criarEncomenda] erro ao criar cliente:", error.code, error.message);
+      return { ok: false, error: "Não consegui cadastrar a cliente nova. Tente de novo." };
+    }
     clienteId = data.id;
   }
 

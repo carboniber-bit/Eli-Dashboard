@@ -19,7 +19,10 @@ export async function salvarCliente(id: string | null, raw: unknown): Promise<Re
     ? supabase.from("clientes").update(payload).eq("id", id).select("id").single()
     : supabase.from("clientes").insert(payload).select("id").single();
   const { data, error } = await q;
-  if (error) return { ok: false, error: "Não consegui salvar a cliente. Tente de novo." };
+  if (error) {
+    console.error("[salvarCliente] erro:", error.code, error.message);
+    return { ok: false, error: "Não consegui salvar a cliente. Tente de novo." };
+  }
 
   revalidatePath("/", "layout");
   return { ok: true, id: data.id };
